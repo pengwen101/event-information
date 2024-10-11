@@ -117,6 +117,13 @@
         .event-card {
             position: relative;
             overflow:hidden;
+            transition: all 0.64s ease;
+            background-color: var(--slate) !important;
+        }
+
+        .event-card:hover {
+            background-color: var(--keylime) !important;
+            color: var(--charcoal) !important;
         }
 
         .price-circle {
@@ -126,23 +133,6 @@
             cursor: default;
         }
 
-        .swiper {
-            width: 100%;
-            padding-top: 50px;
-            padding-bottom: 50px;
-        }
-
-        .swiper-slide {
-            background-position: center;
-            background-size: cover;
-            width: 300px;
-            height: fit-content;
-        }
-
-        .swiper-slide .event-card {
-            display: block;
-            width: 100%;
-        }
 
         .font-extra-small {
             font-size: 10px;
@@ -168,8 +158,15 @@
             position:absolute;
             top:15%;
             width:100%;
-            height:5px;
-            box-shadow:0 0 30px 60px var(--slate);
+            height: 5px;
+    background-color: var(--slate);
+    filter: blur(150px); /* Add a blur effect */
+    transition: all 0.64s ease;
+        }
+
+        .event-card:hover > .blured-square{
+            background-color: var(--keylime) !important; /* Change background color on hover */
+    filter: blur(20px); /* Optionally, change the blur intensity on hover */
         }
 
         .event-details{

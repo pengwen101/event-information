@@ -12,7 +12,7 @@
    </style>
 @endsection
 @section('content')
-<div class = "container-sm p-5">
+<div class = "container-sm p-5 mt-5">
     <h1 class = "mb-2">{{ isset($organizer) ? 'Edit Organizer' : 'Add Organizer' }}</h1>
     <form action = "{{ isset($organizer) ? route('organizers.update', ['organizer'=> $organizer->id]) : route('organizers.store') }}"
         method = "POST">

@@ -4,6 +4,7 @@
 @endsection
 
 @section('content')
+<div class = "container-sm p-5 mt-5">
     <h1 class = "mb-2">{{ isset($event_category) ? 'Edit Event Categories' : 'Add Event Categories' }}</h1>
     <form action = "{{ isset($event_category) ? route('event-categories.update', ['event_category'=> $event_category->id]) : route('event-categories.store') }}"
         method = "POST">
@@ -22,18 +23,7 @@
         </div>
         <button type="submit" class="btn btn-primary">{{isset($event_category)? 'Save edit': 'Create'}}</button>
     </form>
-    {{-- 
-    ['name'=>'Kids Education Expo 2024', 
-            'venue'=>'The Westin',
-            'date'=>'2024-10-21',
-            'start_time'=>'09:00:00',
-            'description'=>$faker->text(),
-            'booking_url'=>$faker->url(),
-            'tags'=>'Kids Expo, Education Expo',
-            'organizer_id'=>rand(1,5),
-            'event_category_category_id'=>rand(1,3),
-            'created_at'=>Carbon::now()->format('Y-m-d H:i:s'),
-            'updated_at'=>Carbon::now()->format('Y-m-d H:i:s')], --}}
+</div>
 @endsection
 
 @section('library-js')

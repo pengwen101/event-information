@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-    <div class = "container-fluid">
+<div class = "container-sm p-5 mt-5">
         <div class="d-flex justify-content-between">
             <h1>Event Categories</h1>
             <a href = "{{ route('event-categories.create') }}">

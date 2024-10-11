@@ -78,7 +78,7 @@
             let res = "";
             tags.forEach(function(tag){
                 res += `
-                <div class = 'bg-keylime color-charcoal px-4 py-2 rounded-pill w-auto'>
+                <div class = 'bg-keylime color-charcoal px-4 py-2 rounded-pill w-auto mr-2'>
                     ${tag}
                     </div>
                 `;
