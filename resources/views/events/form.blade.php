@@ -5,15 +5,24 @@
    <link rel = "stylesheet" href = "https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.css">
    <style>
     .label-info{    
-        background-color: blue;
+        background-color: var(--keylime);
+        color: var(--charcoal) !important;
         padding: 5px 10px 5px 10px;
         border-radius:20px;
+    }
+    .bootstrap-tagsinput{
+        padding: 5px 5px;
+        background-color: var(--slate);
+    }
+    #tags{
+        background-color:none !important;
     }
    </style>
 @endsection
 
 @section('content')
-    <h1>{{ isset($event) ? 'Edit Event' : 'Add Event' }}</h1>
+<div class = "container-sm p-5 mt-5">
+    <h1 class = "mb-2">{{ isset($event) ? 'Edit Event' : 'Add Event' }}</h1>
     <form action = "{{ isset($event) ? route('events.update', ['event'=> $event->id]) : route('events.store') }}"
         method = "POST">
         @csrf
@@ -30,7 +39,7 @@
             </div>
             <div class="form-group col-md-6">
                 <label for="date">Date</label>
-                @if ($errors->has('date'))"
+                @if ($errors->has('date'))
                     <div class="text-danger">{{ $errors->first('date') }}</div>
                 @endif
                 <input value = "{{isset($event)? $event->date : ''}}" type="date" class="form-control" id="date" name = "date" placeholder="Start date">
@@ -101,6 +110,7 @@
         </div>
         <button type="submit" class="btn btn-primary">{{isset($event)? 'Save edit': 'Create'}}</button>
     </form>
+</div>
 
 
     {{-- 

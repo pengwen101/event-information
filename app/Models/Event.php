@@ -11,6 +11,13 @@ class Event extends Model
     use HasFactory;
 
     protected $fillable = ['title', 'venue', 'date', 'start_time', 'organizer_id', 'event_category_id', 'description', 'tags'];
+    protected $casts = [
+        'date' => 'date',  
+        'start_time' => 'datetime:H:i',
+        'organizer_id' =>'integer',
+        'event_category_id' =>'integer',
+
+    ];
 
     public function eventCategory():BelongsTo{
         return $this->belongsTo(EventCategory::class);

@@ -17,7 +17,30 @@ class EventController extends Controller
     public function index()
     {
         $events = Event::where('active', 1)->orderBy('date', 'desc')->get();
-        return view ('event.index', ['events'=> $events]);
+        return view('events.index', ['events' => $events]);
+    }
+
+    public function search(Request $request)
+    {
+
+        $events =  Event::where('active', 1)->orderBy('date', 'desc')->get();
+
+        if ($request->keyword != '') {
+            $events = Event::with('organizer')->where('active', 1) // Ensure active = 1
+            ->where(function ($query) use ($request) {
+                $query->where('title', 'LIKE', '%' . $request->keyword . '%')
+                      ->orWhere('venue', 'LIKE', '%' . $request->keyword . '%')
+                      ->orWhereHas('organizer', function ($subQuery) use ($request) {
+                          $subQuery->where('name', 'LIKE', '%' . $request->keyword . '%');
+                      });
+            })
+            ->orderBy('date', 'desc')
+            ->get();
+        }
+
+
+
+        return response()->json(['events'=>$events]);
     }
 
     /**
@@ -27,7 +50,7 @@ class EventController extends Controller
     {
         $event_categories = EventCategory::query()->get();
         $organizers = Organizer::query()->get();
-        return view("event.form", ['event_categories'=>$event_categories, 'organizers'=>$organizers]);
+        return view("events.form", ['event_categories' => $event_categories, 'organizers' => $organizers]);
     }
 
     /**
@@ -40,11 +63,11 @@ class EventController extends Controller
             'venue' => 'required|max:255',
             'date' => 'required|date_format:Y-m-d',
             'start_time' => 'required|date_format:H:i',
-            'description'=>'required',
-            'booking_url'=>'url|nullable',
-            'tags'=>'required',
-            'organizer_id' =>'required|exists:organizers,id',
-            'event_category_id' =>'required|exists:event_categories,id',
+            'description' => 'required',
+            'booking_url' => 'url|nullable',
+            'tags' => 'required',
+            'organizer_id' => 'required|exists:organizers,id',
+            'event_category_id' => 'required|exists:event_categories,id',
         ]);
 
         if (!$event) {
@@ -58,7 +81,7 @@ class EventController extends Controller
             'date' => $request->date,
             'start_time' => $request->start_time,
             'description' => $request->description,
-            'booking_url' => $request->booking_url? $request->booking_url : null,
+            'booking_url' => $request->booking_url ? $request->booking_url : null,
             'tags' => $request->tags,
             'organizer_id' => $request->organizer_id,
             'event_category_id' => $request->event_category_id,
@@ -90,7 +113,7 @@ class EventController extends Controller
         $event = Event::query()->where('id', $id)->first();
         $event_categories = EventCategory::query()->get();
         $organizers = Organizer::query()->get();
-        return view("event.form", ['event' => $event, 'event_categories' => $event_categories, 'organizers'=>$organizers]);
+        return view("events.form", ['event' => $event, 'event_categories' => $event_categories, 'organizers' => $organizers]);
     }
 
     /**
@@ -103,17 +126,17 @@ class EventController extends Controller
             'venue' => 'required|max:255',
             'date' => 'required|date_format:Y-m-d',
             'start_time' => 'required|date_format:H:i',
-            'description'=>'required',
-            'booking_url'=>'url|nullable',
-            'tags'=>'required',
-            'organizer_id' =>'required|exists:organizers,id',
-            'event_category_id' =>'required|exists:event_categories,id',
+            'description' => 'required',
+            'booking_url' => 'url|nullable',
+            'tags' => 'required',
+            'organizer_id' => 'required|exists:organizers,id',
+            'event_category_id' => 'required|exists:event_categories,id',
         ]);
 
         if (!$event) {
-            FacadesSession::flash('message', 'Artikel gagal di tambahkan !');
+            FacadesSession::flash('message', 'Event gagal di tambahkan !');
             FacadesSession::flash('alert-class', 'failed');
-            return redirect()->route('articles.index');
+            return redirect()->route('events.index');
         }
 
         Event::query()->where('id', $id)->update([
@@ -122,7 +145,7 @@ class EventController extends Controller
             'date' => $request->date,
             'start_time' => $request->start_time,
             'description' => $request->description,
-            'booking_url' => $request->booking_url? $request->booking_url : null,
+            'booking_url' => $request->booking_url ? $request->booking_url : null,
             'tags' => $request->tags,
             'organizer_id' => $request->organizer_id,
             'event_category_id' => $request->event_category_id,
